@@ -1,5 +1,6 @@
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries.js';
+import { fetchCountriesCapital } from './js/fetchCountries.js';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import debounce from 'lodash.debounce';
 
@@ -11,10 +12,79 @@ let refs = {
   countryInfo: document.querySelector('.country-info'),
 };
 
+// Add attribute 'autofocus'
+refs.searchBox.setAttribute('autofocus', 'autofocus');
+refs.searchBox.setAttribute('placeholder', 'Enter the name of the country');
+
+// Add Event Listener
 refs.searchBox.addEventListener(
   'input',
   debounce(onInputCountry, DEBOUNCE_DELAY)
 );
+
+// Create box for 'label, input and buttons'
+document
+  .querySelector('body')
+  .insertAdjacentHTML('afterbegin', "<div class='box'></div>");
+let divBox = document.querySelector('.box');
+divBox.prepend(refs.searchBox);
+
+// Create tag 'label'
+refs.searchBox.insertAdjacentHTML(
+  'afterend',
+  "<label class='label'>Search the country by:</label >"
+);
+const labelSearch = document.querySelector('.label');
+
+// Create buttons
+labelSearch.insertAdjacentHTML(
+  'beforeend',
+  "<div><button type='button' class='btn-name'>Name</button></div>"
+);
+const nameBtn = document.querySelector('.btn-name');
+nameBtn.disabled = true;
+
+nameBtn.insertAdjacentHTML(
+  'afterend',
+  " <button type='button' class='btn-capital'>Capital</button>"
+);
+const capitalBtn = document.querySelector('.btn-capital');
+
+// Add Event Listener for Button 'Capital'
+capitalBtn.addEventListener('click', e => {
+  refs.searchBox.value = '';
+  if (document.querySelector('.country-box')) {
+    document.querySelector('.country-box').remove();
+  } else if (document.querySelectorAll('.country-list__item')) {
+    document.querySelectorAll('.country-list__item').forEach(element => {
+      element.remove();
+    });
+  } else {
+    return;
+  }
+  refs.searchBox.setAttribute('placeholder', 'Enter the name of the capital');
+  refs.searchBox.focus();
+  nameBtn.disabled = false;
+  capitalBtn.disabled = true;
+});
+
+// Add Event Listener for Button 'Name'
+nameBtn.addEventListener('click', e => {
+  refs.searchBox.value = '';
+  if (document.querySelector('.country-box')) {
+    document.querySelector('.country-box').remove();
+  } else if (document.querySelectorAll('.country-list__item')) {
+    document.querySelectorAll('.country-list__item').forEach(element => {
+      element.remove();
+    });
+  } else {
+    return;
+  }
+  refs.searchBox.setAttribute('placeholder', 'Enter the name of the country');
+  refs.searchBox.focus();
+  nameBtn.disabled = true;
+  capitalBtn.disabled = false;
+});
 
 function onInputCountry() {
   const countryName = refs.searchBox.value;
@@ -25,38 +95,73 @@ function onInputCountry() {
     return;
   }
 
-  fetchCountries(countryName)
-    .then(countrys => {
-      if (countrys.length > 10) {
-        Notify.info(
-          'Too many matches found. Please enter a more specific name.'
-        );
+  if (nameBtn.disabled) {
+    fetchCountries(countryName)
+      .then(countrys => {
+        if (countrys.length > 10) {
+          Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          );
+          refs.countryInfo.innerHTML = '';
+          refs.countryList.innerHTML = '';
+          return;
+        }
+
+        if (countrys.length <= 10) {
+          const listMarkup = countrys.map(country =>
+            countryListTemplate(country)
+          );
+          refs.countryList.innerHTML = listMarkup.join('');
+          refs.countryInfo.innerHTML = '';
+        }
+
+        if (countrys.length === 1) {
+          const markup = countrys.map(country => countryСardTeemplate(country));
+          refs.countryInfo.innerHTML = markup.join('');
+          refs.countryList.innerHTML = '';
+        }
+      })
+
+      .catch(error => {
+        Notify.failure('Oops, there is no country with that name');
         refs.countryInfo.innerHTML = '';
         refs.countryList.innerHTML = '';
-        return;
-      }
+        return error;
+      });
+  } else {
+    fetchCountriesCapital(countryName)
+      .then(countrys => {
+        if (countrys.length > 10) {
+          Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          );
+          refs.countryInfo.innerHTML = '';
+          refs.countryList.innerHTML = '';
+          return;
+        }
 
-      if (countrys.length <= 10) {
-        const listMarkup = countrys.map(country =>
-          countryListTemplate(country)
-        );
-        refs.countryList.innerHTML = listMarkup.join('');
+        if (countrys.length <= 10) {
+          const listMarkup = countrys.map(country =>
+            countryListTemplate(country)
+          );
+          refs.countryList.innerHTML = listMarkup.join('');
+          refs.countryInfo.innerHTML = '';
+        }
+
+        if (countrys.length === 1) {
+          const markup = countrys.map(country => countryСardTeemplate(country));
+          refs.countryInfo.innerHTML = markup.join('');
+          refs.countryList.innerHTML = '';
+        }
+      })
+
+      .catch(error => {
+        Notify.failure('Oops, there is no country with that name');
         refs.countryInfo.innerHTML = '';
-      }
-
-      if (countrys.length === 1) {
-        const markup = countrys.map(country => countryСardTeemplate(country));
-        refs.countryInfo.innerHTML = markup.join('');
         refs.countryList.innerHTML = '';
-      }
-    })
-
-    .catch(error => {
-      Notify.failure('Oops, there is no country with that name');
-      refs.countryInfo.innerHTML = '';
-      refs.countryList.innerHTML = '';
-      return error;
-    });
+        return error;
+      });
+  }
 }
 
 function countryСardTeemplate({
@@ -67,6 +172,7 @@ function countryСardTeemplate({
   languages,
   currencies,
   area,
+  cca3,
 }) {
   // Population:  Separation of thousandths
   let x = String(population);
@@ -102,17 +208,20 @@ function countryСardTeemplate({
   }
 
   return `
+    <div class="country-box">
     <div class="country-info__wrapper">
         <img class="country-info__flags" src="${flags.svg}" alt="${name.official}" width="50" />
-        <h1 class="country-info__name">${name.official}</h1>
+        <h1 class="country-info__name">${name.official} [ ${cca3} ]</h1>
     </div>
       <ul class="country__list">
+      <li class="country__text"><span class="country__text--weight">Area:</span> ${area} km<sup>2<sup></li>
       <li class="country__text"><span class="country__text--weight">Capital:</span> ${capital}</li>
       <li class="country__text"><span class="country__text--weight">Population:</span> ${population}</li>
       <li class="country__text"><span class="country__text--weight">Languages:</span> ${language}</>
       <li class="country__text"><span class="country__text--weight">Currency:</span> ${currency}</li>
-      <li class="country__text"><span class="country__text--weight">Area:</span> ${area} km<sup>2<sup></li>
+      
       </ul>
+    </div>
   `;
 }
 

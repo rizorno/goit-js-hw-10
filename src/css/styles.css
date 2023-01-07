@@ -39,12 +39,38 @@ p {
 
 /* search-box */
 
+.box {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
 #search-box {
   font: inherit;
   width: 300px;
-  padding: 8px;
-  margin-bottom: 16px;
+  padding: 5px 10px;
   border-radius: 5px;
+  border: 1px solid;
+}
+
+.label {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+button {
+  width: 100px;
+  height: 30px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-top: 5px;
+  border: 1px solid;
+}
+
+.btn-name {
+  margin-right: 5px;
 }
 
 /* country-list */
