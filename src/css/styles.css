@@ -11,7 +11,9 @@ body {
   color: #212121;
   line-height: 1.5;
 
-  margin: 20px;
+  margin: 30px;
+
+  background-image: url('./bg-pattern.png');
 }
 
 ul {
@@ -43,7 +45,7 @@ p {
   display: flex;
   gap: 20px;
   align-items: flex-end;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 #search-box {
@@ -93,7 +95,7 @@ button {
   display: flex;
   gap: 15px;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .country-info__name {
