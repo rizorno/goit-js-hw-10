@@ -68,7 +68,7 @@ capitalBtn.addEventListener('click', e => {
   capitalBtn.disabled = true;
 });
 
-// Add Event Listener for Button 'Name'
+// Adding an event listener for the button "Name"
 nameBtn.addEventListener('click', e => {
   refs.searchBox.value = '';
   if (document.querySelector('.country-box')) {
@@ -86,6 +86,7 @@ nameBtn.addEventListener('click', e => {
   capitalBtn.disabled = false;
 });
 
+// Function of server response processing
 function onInputCountry() {
   const countryName = refs.searchBox.value;
 
@@ -164,6 +165,7 @@ function onInputCountry() {
   }
 }
 
+// Function for creating Card template
 function countryСardTeemplate({
   flags,
   name,
@@ -225,6 +227,7 @@ function countryСardTeemplate({
   `;
 }
 
+// Function for creating Card template
 function countryListTemplate({ flags, name }) {
   return `
   <li class="country-list__item">
