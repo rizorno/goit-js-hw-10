@@ -49,6 +49,7 @@ nameBtn.insertAdjacentHTML(
   " <button type='button' class='btn-capital'>Capital</button>"
 );
 const capitalBtn = document.querySelector('.btn-capital');
+capitalBtn.classList.toggle('js-bg');
 
 // Add Event Listener for Button 'Capital'
 capitalBtn.addEventListener('click', e => {
@@ -66,6 +67,8 @@ capitalBtn.addEventListener('click', e => {
   refs.searchBox.focus();
   nameBtn.disabled = false;
   capitalBtn.disabled = true;
+  nameBtn.classList.toggle('js-bg');
+  capitalBtn.classList.toggle('js-bg');
 });
 
 // Adding an event listener for the button "Name"
@@ -84,6 +87,8 @@ nameBtn.addEventListener('click', e => {
   refs.searchBox.focus();
   nameBtn.disabled = true;
   capitalBtn.disabled = false;
+  nameBtn.classList.toggle('js-bg');
+  capitalBtn.classList.toggle('js-bg');
 });
 
 // Function of server response processing
