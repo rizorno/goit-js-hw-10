@@ -56,6 +56,10 @@ p {
   border: 1px solid;
 }
 
+#search-box::placeholder {
+  font-size: 15px;
+}
+
 .label {
   display: inline-flex;
   flex-direction: column;
