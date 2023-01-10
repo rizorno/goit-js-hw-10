@@ -14,9 +14,11 @@ let refs = {
 
 // Add attribute 'autofocus'
 refs.searchBox.setAttribute('autofocus', 'autofocus');
+
+// Add attribute 'placeholder'
 refs.searchBox.setAttribute('placeholder', 'Enter the name of the country');
 
-// Add Event Listener
+// Add Event Listener on 'input'
 refs.searchBox.addEventListener(
   'input',
   debounce(onInputCountry, DEBOUNCE_DELAY)
@@ -29,14 +31,14 @@ document
 let divBox = document.querySelector('.box');
 divBox.prepend(refs.searchBox);
 
-// Create tag 'label'
+// Create 'label'
 refs.searchBox.insertAdjacentHTML(
   'afterend',
   "<label class='label'>Search the country by:</label >"
 );
 const labelSearch = document.querySelector('.label');
 
-// Create buttons
+// Create button 'Name'
 labelSearch.insertAdjacentHTML(
   'beforeend',
   "<div><button type='button' class='btn-name'>Name</button></div>"
@@ -44,6 +46,7 @@ labelSearch.insertAdjacentHTML(
 const nameBtn = document.querySelector('.btn-name');
 nameBtn.disabled = true;
 
+// Create button 'Capital'
 nameBtn.insertAdjacentHTML(
   'afterend',
   " <button type='button' class='btn-capital'>Capital</button>"
@@ -51,7 +54,7 @@ nameBtn.insertAdjacentHTML(
 const capitalBtn = document.querySelector('.btn-capital');
 capitalBtn.classList.toggle('js-bg');
 
-// Add Event Listener for Button 'Capital'
+// Add Event Listener on button 'Capital'
 capitalBtn.addEventListener('click', e => {
   refs.searchBox.value = '';
   if (document.querySelector('.country-box')) {
@@ -71,7 +74,7 @@ capitalBtn.addEventListener('click', e => {
   capitalBtn.classList.toggle('js-bg');
 });
 
-// Adding an event listener for the button "Name"
+// Add Event listener on button "Name"
 nameBtn.addEventListener('click', e => {
   refs.searchBox.value = '';
   if (document.querySelector('.country-box')) {
