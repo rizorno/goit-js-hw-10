@@ -78,6 +78,7 @@ button {
 
 .js-bg {
   background-color: aquamarine;
+  cursor: pointer;
 }
 
 .btn-name {
