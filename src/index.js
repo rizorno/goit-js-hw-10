@@ -1,44 +1,44 @@
 import './css/styles.css';
-import { fetchCountries } from './js/fetchCountries.js';
-import { fetchCountriesCapital } from './js/fetchCountries.js';
+
+import { CountryAPI } from './js/fetchCountries';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import debounce from 'lodash.debounce';
 
 const DEBOUNCE_DELAY = 300;
 
-let refs = {
+// Create a new example of Class
+const countryApi = new CountryAPI();
+
+const { searchBox, countryList, countryInfo } = {
   searchBox: document.querySelector('#search-box'),
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
 };
 
 // Add attribute 'autofocus'
-refs.searchBox.setAttribute('autofocus', 'autofocus');
+searchBox.setAttribute('autofocus', 'autofocus');
 
 // Add attribute 'placeholder'
-refs.searchBox.setAttribute('placeholder', 'Enter the name of the country');
+searchBox.setAttribute('placeholder', 'Enter the name of the country');
 
 // Add Event Listener on 'input'
-refs.searchBox.addEventListener(
-  'input',
-  debounce(onInputCountry, DEBOUNCE_DELAY)
-);
+searchBox.addEventListener('input', debounce(onInputCountry, DEBOUNCE_DELAY));
 
-// Create box for 'label, input and buttons'
+// section 'Search country by' : create box for 'label, input and buttons'
 document
   .querySelector('body')
   .insertAdjacentHTML('afterbegin', "<div class='box'></div>");
 let divBox = document.querySelector('.box');
-divBox.prepend(refs.searchBox);
+divBox.prepend(searchBox);
 
-// Create 'label'
-refs.searchBox.insertAdjacentHTML(
+// section 'Search country by' : create 'label'
+searchBox.insertAdjacentHTML(
   'afterend',
-  "<label class='label'>Search the country by:</label >"
+  "<label class='label'>Search country by:</label >"
 );
 const labelSearch = document.querySelector('.label');
 
-// Create button 'Name'
+// section 'Search country by' : create button 'Name'
 labelSearch.insertAdjacentHTML(
   'beforeend',
   "<div><button type='button' class='btn-name'>Name</button></div>"
@@ -46,7 +46,7 @@ labelSearch.insertAdjacentHTML(
 const nameBtn = document.querySelector('.btn-name');
 nameBtn.disabled = true;
 
-// Create button 'Capital'
+// section 'Search country by' : create button 'Capital'
 nameBtn.insertAdjacentHTML(
   'afterend',
   " <button type='button' class='btn-capital'>Capital</button>"
@@ -54,126 +54,139 @@ nameBtn.insertAdjacentHTML(
 const capitalBtn = document.querySelector('.btn-capital');
 capitalBtn.classList.toggle('js-bg');
 
-// Add Event Listener on button 'Capital'
+// section 'Search country by' : add Event Listener on button 'Capital'
 capitalBtn.addEventListener('click', e => {
-  refs.searchBox.value = '';
-  if (document.querySelector('.country-box')) {
-    document.querySelector('.country-box').remove();
-  } else if (document.querySelectorAll('.country-list__item')) {
-    document.querySelectorAll('.country-list__item').forEach(element => {
-      element.remove();
-    });
-  } else {
-    return;
-  }
-  refs.searchBox.setAttribute('placeholder', 'Enter the name of the capital');
-  refs.searchBox.focus();
+  searchBox.setAttribute('placeholder', 'Enter the name of the capital');
+  searchBox.focus();
+
   nameBtn.disabled = false;
   capitalBtn.disabled = true;
+
   nameBtn.classList.toggle('js-bg');
   capitalBtn.classList.toggle('js-bg');
-});
 
-// Add Event listener on button "Name"
-nameBtn.addEventListener('click', e => {
-  refs.searchBox.value = '';
+  searchBox.value = '';
+
   if (document.querySelector('.country-box')) {
     document.querySelector('.country-box').remove();
-  } else if (document.querySelectorAll('.country-list__item')) {
+    return;
+  }
+  if (document.querySelectorAll('.country-list__item')) {
     document.querySelectorAll('.country-list__item').forEach(element => {
       element.remove();
     });
-  } else {
     return;
   }
-  refs.searchBox.setAttribute('placeholder', 'Enter the name of the country');
-  refs.searchBox.focus();
-  nameBtn.disabled = true;
-  capitalBtn.disabled = false;
-  nameBtn.classList.toggle('js-bg');
-  capitalBtn.classList.toggle('js-bg');
 });
 
-// Function of server response processing
+// section 'Search country by' : add Event listener on button "Name"
+nameBtn.addEventListener('click', e => {
+  searchBox.setAttribute('placeholder', 'Enter the name of the country');
+  searchBox.focus();
+
+  nameBtn.disabled = true;
+  capitalBtn.disabled = false;
+
+  nameBtn.classList.toggle('js-bg');
+  capitalBtn.classList.toggle('js-bg');
+
+  searchBox.value = '';
+
+  if (document.querySelector('.country-box')) {
+    document.querySelector('.country-box').remove();
+    return;
+  }
+  if (document.querySelectorAll('.country-list__item')) {
+    document.querySelectorAll('.country-list__item').forEach(element => {
+      element.remove();
+    });
+    return;
+  }
+});
+
+// Function of processing server response to a request
 function onInputCountry() {
-  const countryName = refs.searchBox.value;
+  const countryName = searchBox.value;
 
   if (countryName === '') {
-    refs.countryInfo.innerHTML = '';
-    refs.countryList.innerHTML = '';
+    countryInfo.innerHTML = '';
+    countryList.innerHTML = '';
     return;
   }
 
+  // Search country by name
   if (nameBtn.disabled) {
-    fetchCountries(countryName)
+    countryApi
+      .fetchCountries(countryName)
       .then(countrys => {
         if (countrys.length > 10) {
           Notify.info(
             'Too many matches found. Please enter a more specific name.'
           );
-          refs.countryInfo.innerHTML = '';
-          refs.countryList.innerHTML = '';
+          countryInfo.innerHTML = '';
+          countryList.innerHTML = '';
           return;
         }
-
         if (countrys.length <= 10) {
           const listMarkup = countrys.map(country =>
             countryListTemplate(country)
           );
-          refs.countryList.innerHTML = listMarkup.join('');
-          refs.countryInfo.innerHTML = '';
+          countryList.innerHTML = listMarkup.join('');
+          countryInfo.innerHTML = '';
+          // return not use
         }
-
         if (countrys.length === 1) {
           const markup = countrys.map(country => countryСardTeemplate(country));
-          refs.countryInfo.innerHTML = markup.join('');
-          refs.countryList.innerHTML = '';
+          countryInfo.innerHTML = markup.join('');
+          countryList.innerHTML = '';
+          return;
         }
       })
-
       .catch(error => {
         Notify.failure('Oops, there is no country with that name');
-        refs.countryInfo.innerHTML = '';
-        refs.countryList.innerHTML = '';
+        countryInfo.innerHTML = '';
+        countryList.innerHTML = '';
         return error;
       });
-  } else {
-    fetchCountriesCapital(countryName)
+  }
+  // Search country by capital
+  else {
+    countryApi
+      .fetchCountriesCapital(countryName)
       .then(countrys => {
         if (countrys.length > 10) {
           Notify.info(
             'Too many matches found. Please enter a more specific name.'
           );
-          refs.countryInfo.innerHTML = '';
-          refs.countryList.innerHTML = '';
+          countryInfo.innerHTML = '';
+          countryList.innerHTML = '';
           return;
         }
-
         if (countrys.length <= 10) {
           const listMarkup = countrys.map(country =>
             countryListTemplate(country)
           );
-          refs.countryList.innerHTML = listMarkup.join('');
-          refs.countryInfo.innerHTML = '';
+          countryList.innerHTML = listMarkup.join('');
+          countryInfo.innerHTML = '';
+          // return not use
         }
-
         if (countrys.length === 1) {
           const markup = countrys.map(country => countryСardTeemplate(country));
-          refs.countryInfo.innerHTML = markup.join('');
-          refs.countryList.innerHTML = '';
+          countryInfo.innerHTML = markup.join('');
+          countryList.innerHTML = '';
+          return;
         }
       })
-
       .catch(error => {
         Notify.failure('Oops, there is no country with that name');
-        refs.countryInfo.innerHTML = '';
-        refs.countryList.innerHTML = '';
+        countryInfo.innerHTML = '';
+        countryList.innerHTML = '';
         return error;
       });
   }
 }
 
-// Function for creating Card template
+// Function for creating card template
 function countryСardTeemplate({
   flags,
   name,
@@ -235,7 +248,7 @@ function countryСardTeemplate({
   `;
 }
 
-// Function for creating Card template
+// Function for creating card template
 function countryListTemplate({ flags, name }) {
   return `
   <li class="country-list__item">
