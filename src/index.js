@@ -58,10 +58,10 @@ capitalBtn.classList.toggle('js-bg');
 capitalBtn.addEventListener('click', e => {
   searchBox.setAttribute('placeholder', 'Enter the name of the capital');
   searchBox.focus();
-
+  // add or remove disabled for buttons
   nameBtn.disabled = false;
   capitalBtn.disabled = true;
-
+  // add or remove class 'js-bg'
   nameBtn.classList.toggle('js-bg');
   capitalBtn.classList.toggle('js-bg');
 
@@ -83,10 +83,10 @@ capitalBtn.addEventListener('click', e => {
 nameBtn.addEventListener('click', e => {
   searchBox.setAttribute('placeholder', 'Enter the name of the country');
   searchBox.focus();
-
+  // add or remove disabled for buttons
   nameBtn.disabled = true;
   capitalBtn.disabled = false;
-
+  // add or remove class 'js-bg'
   nameBtn.classList.toggle('js-bg');
   capitalBtn.classList.toggle('js-bg');
 
@@ -197,7 +197,7 @@ function countryСardTeemplate({
   area,
   cca3,
 }) {
-  // Population:  Separation of thousandths
+  // Population:  separation of thousandths
   let x = String(population);
   let s = x.split('');
   let index = x.length - 1;
@@ -210,7 +210,7 @@ function countryСardTeemplate({
     population = r;
   }
 
-  // Languages:  Separating commas with a space
+  // Languages:  separating commas with a space
   let language = Object.values(languages).join(', ');
 
   // Currencies:

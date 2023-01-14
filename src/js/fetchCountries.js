@@ -3,8 +3,8 @@ export class CountryAPI {
   #params = `?fields=name,capital,population,flags,languages,currencies,area,cca3`;
 
   //? Function to search for a country by the name
-  fetchCountries(name) {
-    return fetch(`${this.#BASE_URL}name/${name}${this.#params}`).then(
+  fetchCountries(nameCountry) {
+    return fetch(`${this.#BASE_URL}name/${nameCountry}${this.#params}`).then(
       response => {
         if (!response.ok) {
           throw new Error(response.status);
@@ -15,14 +15,14 @@ export class CountryAPI {
   }
 
   //? Function to search for a country by the name of the capital
-  fetchCountriesCapital(capital) {
-    return fetch(`${this.#BASE_URL}capital/${capital}${this.#params}`).then(
-      response => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json();
+  fetchCountriesCapital(capitalCountry) {
+    return fetch(
+      `${this.#BASE_URL}capital/${capitalCountry}${this.#params}`
+    ).then(response => {
+      if (!response.ok) {
+        throw new Error(response.status);
       }
-    );
+      return response.json();
+    });
   }
 }
