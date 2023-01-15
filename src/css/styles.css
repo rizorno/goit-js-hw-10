@@ -72,13 +72,17 @@ button {
   font-size: 14px;
   border-radius: 4px;
   margin-top: 5px;
-  border: 1px solid;
+  border: none;
   background-color: rgb(247, 241, 241);
+  text-decoration: none;
 }
 
 .js-bg {
-  background-color: aquamarine;
+  background-color: #26a69a;
+  color: #ffffff;
   cursor: pointer;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%),
+    0 3px 1px -2px rgb(0 0 0 / 20%);
 }
 
 .btn-name {
