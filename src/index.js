@@ -219,7 +219,9 @@ function countryСardTeemplate({
 
   // Currencies:
   let obj = Object.values(currencies);
-  let currency = obj.map(current => `${current.name} [ ${current.code} ]`);
+  let currency = obj
+    .map(current => `${current.name} [ ${current.code} ]`)
+    .join(', ');
 
   // Area:
   let m = String(area);
