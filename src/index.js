@@ -188,14 +188,16 @@ function onInputCountry() {
 
 // Function for creating card template
 function countryСardTeemplate({
-  flags,
   name,
   capital,
   population,
+  flags,
   languages,
   currencies,
   area,
-  cca3,
+  alpha3Code,
+  callingCodes,
+  topLevelDomain,
 }) {
   // Population:  separation of thousandths
   let x = String(population);
@@ -211,11 +213,12 @@ function countryСardTeemplate({
   }
 
   // Languages:  separating commas with a space
-  let language = Object.values(languages).join(', ');
+  let lang = Object.values(languages);
+  let language = lang.map(lan => `${lan.name}`).join(', ');
 
   // Currencies:
   let obj = Object.values(currencies);
-  let currency = obj.map(current => `${current.name}, [ ${current.symbol} ]`);
+  let currency = obj.map(current => `${current.name} [ ${current.code} ]`);
 
   // Area:
   let m = String(area);
@@ -233,8 +236,8 @@ function countryСardTeemplate({
   return `
     <div class="country-box">
     <div class="country-info__wrapper">
-        <img class="country-info__flags" src="${flags.svg}" alt="${name.official}" width="50" />
-        <h1 class="country-info__name">${name.official} [ ${cca3} ]</h1>
+        <img class="country-info__flags" src="${flags.svg}" alt="${name}" width="50" />
+        <h1 class="country-info__name">${name} [ ${alpha3Code} ]</h1>
     </div>
       <ul class="country__list">
       <li class="country__text"><span class="country__text--weight">Area:</span> ${area} km<sup>2<sup></li>
@@ -242,7 +245,8 @@ function countryСardTeemplate({
       <li class="country__text"><span class="country__text--weight">Population:</span> ${population}</li>
       <li class="country__text"><span class="country__text--weight">Languages:</span> ${language}</>
       <li class="country__text"><span class="country__text--weight">Currency:</span> ${currency}</li>
-      
+      <li class="country__text"><span class="country__text--weight">Phone code:</span> [ +${callingCodes} ]</li>
+      <li class="country__text"><span class="country__text--weight">Domain:</span> ${topLevelDomain}</li>
       </ul>
     </div>
   `;
