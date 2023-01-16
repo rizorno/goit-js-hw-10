@@ -7,6 +7,7 @@ export class CountryAPI {
     languages,
     currencies,
     area,
+    alpha2Code,
     alpha3Code,
     callingCodes,
     topLevelDomain`;

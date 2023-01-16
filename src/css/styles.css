@@ -105,6 +105,11 @@ button {
 
 /* country-info */
 
+.box-wrapper {
+  display: flex;
+  gap: 100px;
+}
+
 .country-info__wrapper {
   display: flex;
   gap: 15px;

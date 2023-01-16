@@ -195,6 +195,7 @@ function countryСardTeemplate({
   languages,
   currencies,
   area,
+  alpha2Code,
   alpha3Code,
   callingCodes,
   topLevelDomain,
@@ -239,15 +240,22 @@ function countryСardTeemplate({
         <img class="country-info__flags" src="${flags.svg}" alt="${name}" width="50" />
         <h1 class="country-info__name">${name} [ ${alpha3Code} ]</h1>
     </div>
+      <div class="box-wrapper">
+      <div>
       <ul class="country__list">
-      <li class="country__text"><span class="country__text--weight">Area:</span> ${area} km<sup>2<sup></li>
-      <li class="country__text"><span class="country__text--weight">Capital:</span> ${capital}</li>
-      <li class="country__text"><span class="country__text--weight">Population:</span> ${population}</li>
-      <li class="country__text"><span class="country__text--weight">Languages:</span> ${language}</>
-      <li class="country__text"><span class="country__text--weight">Currency:</span> ${currency}</li>
-      <li class="country__text"><span class="country__text--weight">Phone code:</span> [ +${callingCodes} ]</li>
-      <li class="country__text"><span class="country__text--weight">Domain:</span> ${topLevelDomain}</li>
+         <li class="country__text"><span class="country__text--weight">Area:</span> ${area} km<sup>2<sup></li>
+         <li class="country__text"><span class="country__text--weight">Capital:</span> ${capital}</li>
+         <li class="country__text"><span class="country__text--weight">Population:</span> ${population}</li>
+         <li class="country__text"><span class="country__text--weight">Languages:</span> ${language}</>
+         <li class="country__text"><span class="country__text--weight">Currency:</span> ${currency}</li>
+         <li class="country__text"><span class="country__text--weight">Phone code:</span> [ +${callingCodes} ]</li>
+         <li class="country__text"><span class="country__text--weight">Domain:</span> ${topLevelDomain}</li>
       </ul>
+      </div>
+      <div>
+      <img class="country-map" src="https://img.geonames.org/img/country/250/${alpha2Code}.png" alt="${name}"/>
+      </div>
+      </div>
     </div>
   `;
 }
