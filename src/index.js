@@ -256,8 +256,8 @@ function countryСardTeemplate({
 function countryListTemplate({ flags, name }) {
   return `
   <li class="country-list__item">
-    <img src="${flags.svg}" alt="${name.official}" width="30" />
-    <p class="country-list__name">${name.official}</p>
+    <img src="${flags.svg}" alt="${name}" width="30" />
+    <p class="country-list__name">${name}</p>
   </li>
   `;
 }
